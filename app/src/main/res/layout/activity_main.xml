@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="138dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="143dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="143dp"
+        android:text="W3D Server Viewer"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/tableview"
+        android:layout_width="363dp"
+        android:layout_height="635dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <TableRow
+            android:id="@+id/tableRow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/APB"
+                android:layout_width="51dp"
+                android:layout_height="wrap_content"
+                android:text="APB"
+                tools:layout_editor_absoluteX="24dp"
+                tools:layout_editor_absoluteY="72dp" />
+
+            <TextView
+                android:id="@+id/APB_name"
+                android:layout_width="256dp"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/APB_players"
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"
+                android:text="0/0"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/TS"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="TS" />
+
+            <TextView
+                android:id="@+id/TS_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/TS_players"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="0/0"
+                android:textAlignment="center" />
+        </TableRow>
+
+    </TableLayout>
+
+</android.support.constraint.ConstraintLayout>

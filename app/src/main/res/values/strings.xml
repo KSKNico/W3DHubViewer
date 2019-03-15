@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">W3D Hub Viewer</string>
+    <string name="table_name">Name</string>
+    <string name="table_map">Map</string>
+    <string name="table_players">Players</string>
+</resources>

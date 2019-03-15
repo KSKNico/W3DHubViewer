@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <server name="APB">
+        <ip>ip180.ip-176-31-21.eu</ip>
+        <port>30016</port>
+        <note>10</note>
+    </server>
+    <server name="TS">
+        <ip>ip180.ip-176-31-21.eu</ip>
+        <port>23518</port>
+        <note>10</note>
+    </server>
+</resources>
