@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 TableRow row = (TableRow) table.getChildAt(i);
                 String text = (String) ((TextView) row.getChildAt(0)).getText();
                 // Somewhat hardcoded
-                ((TextView)row.getChildAt(1)).setText(result.get(text)[6]);
+                ((TextView)row.getChildAt(1)).setText(result.get(text)[10]);
                 ((TextView)row.getChildAt(2)).setText(result.get(text)[14] + "/" + result.get(text)[16]);
             }
         }
