@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private byte[] receiveData = new byte[1024];
-    private ArrayMap<String, String[]> str = new ArrayMap<String, String[]>();
+    private ArrayMap<String, ArrayMap<String, String>> str = new ArrayMap<String, ArrayMap<String, String>>();
     private DatagramPacket receivePacket = new DatagramPacket(receiveData, 1024);
     private ArrayMap<String, DatagramSocket> socketMap = new ArrayMap<String, DatagramSocket>();
     private ArrayMap<String, DatagramPacket> packetMap = new ArrayMap<String, DatagramPacket>();
-    private final int delay = 1000*10; // 1000 = 1 second
+    private final int delay = 1000*5; // 1000 = 1 second
     public  Handler mHandler = new Handler();
 
 
@@ -118,17 +118,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class ReceiverService extends AsyncTask<ArrayList<ArrayList<String>>, Void, ArrayMap<String, String[]>> {
+    public class ReceiverService extends AsyncTask<ArrayList<ArrayList<String>>, Void, ArrayMap<String, ArrayMap<String, String>>> {
 
         DatagramPacket receivePacket = new DatagramPacket(receiveData, 1024);
 
-        public ArrayMap<String, String[]> doInBackground(ArrayList<ArrayList<String>>... getter) {
+        public ArrayMap<String, ArrayMap<String, String>> doInBackground(ArrayList<ArrayList<String>>... getter) {
             ArrayList<ArrayList<String>> serverList = getter[0];
 
             // Initializes the socketMap, server name -> DatagramSocket
             if (socketMap.size()== 0) {
                 for (ArrayList<String> server : serverList) {
-                    socketMap.put(server.get(0), initializeDatagramSocket(server));
+                    socketMap.put(server.get(0), initializeDatagramSocket(server, serverList));
                 }
             }
             // Initializes the packetMap, server name -> DatagramPacket
@@ -146,9 +146,12 @@ public class MainActivity extends AppCompatActivity {
                 // receive each packet
                 for (String name : socketMap.keySet()) {
                     (socketMap.get(name)).receive(receivePacket);
-                    String check[] = (new String(receivePacket.getData(), 0, receiveData.length)).split("\\\\");
-                    if (check[1].equals("gamename")) {
-                        str.put(name, check);
+
+                    ServerParser parser = new ServerParser();
+                    String output = new String(receivePacket.getData(), 0, receiveData.length);
+                    ArrayMap<String, String> serverInfoMap = parser.parse(output);
+                    if (serverInfoMap.containsKey("gamename")) {
+                        str.put(name, serverInfoMap);
                     }
                     DatagramPacket receivePacket = new DatagramPacket(receiveData, 1024);
                 }
@@ -160,9 +163,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Gets a DatagramSocket for the corresponding server
-        public DatagramSocket initializeDatagramSocket(ArrayList<String> server) {
+        public DatagramSocket initializeDatagramSocket(ArrayList<String> server, ArrayList<ArrayList<String>> serverList) {
+            int port = Integer.parseInt(server.get(2));
             try {
-                return new DatagramSocket(Integer.parseInt(server.get(2)));
+                DatagramSocket socket = new DatagramSocket();
+                socket.connect(InetAddress.getByName(server.get(1)), port);
+                return socket;
             } catch (IOException e) {
                 Log.e("Socket", "Couldn't initialize datagram socket!");
                 e.printStackTrace();
@@ -187,14 +193,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Manipulates the table to use the data in the ArrayMap
-        public void onPostExecute(ArrayMap<String, String[]> result) {
+        public void onPostExecute(ArrayMap<String, ArrayMap<String, String>> result) {
             TableLayout table = findViewById(R.id.tableview);
             for(int i = 0, j = table.getChildCount(); i < j; i++) {
                 TableRow row = (TableRow) table.getChildAt(i);
                 String text = (String) ((TextView) row.getChildAt(0)).getText();
+                ArrayMap<String, String> infoMap = result.get(text);
                 // Somewhat hardcoded
-                ((TextView)row.getChildAt(1)).setText(result.get(text)[10]);
-                ((TextView)row.getChildAt(2)).setText(result.get(text)[14] + "/" + result.get(text)[16]);
+                ((TextView)row.getChildAt(1)).setText(infoMap.get("mapname"));
+                ((TextView)row.getChildAt(2)).setText(infoMap.get("numplayers") + "/" + infoMap.get("maxplayers"));
             }
         }
     }
